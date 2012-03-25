@@ -8,7 +8,7 @@ RTM.prototype.authenticate = function() {
 } 
 
 /**
-* @param params: the parameters other than the api_key and api_secret in form of a dictionary {param-name:param-value}
+* @param params: the parameters other than the api_sig in form of a dictionary {param-name:param-value}
 */
 RTM.prototype.formURL = function(serviceURL, params) {
     hadAPIkey = true;
@@ -18,7 +18,7 @@ RTM.prototype.formURL = function(serviceURL, params) {
     }
     param_names = keys(params).sort();
     
-    sig = "" + api_secret;i
+    sig = "" + api_secret;
     for (param_name in param_names) {
         sig += param_name + param_names[param_name]
     }
