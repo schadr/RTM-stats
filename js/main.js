@@ -1,4 +1,4 @@
-function load() {
+load = function() {
   // check for cookies
   // TODO for later
   // check for callback
