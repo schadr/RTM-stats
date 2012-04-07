@@ -7,3 +7,15 @@ keys = function(dict) {
 
     return keys;
 }
+
+/**
+* from http://papermashup.com/read-url-get-variables-withjavascript/
+*/
+getUrlVars = function() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
