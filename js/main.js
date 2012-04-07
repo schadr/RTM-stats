@@ -8,3 +8,8 @@ load = function() {
   }
   // leave default page
 }
+
+auth = function() {
+  rtm = new RTM();
+  window.location = rtm.getAuthenticationURL();
+}
