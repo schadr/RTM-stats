@@ -17,12 +17,10 @@ RTM.prototype.formURL = function(serviceURL, params) {
         sig = sig + param_names[i] + params[param_names[i]];
     }
     sig = this.sign(sig);
-    alert(sig);
     url = serviceURL;
     for (i = 0; i < param_names.length; i = i + 1) {
         url = url + param_names[i] + "=" + params[param_names[i]] + "&";
     }
-    alert(url);
     url = url + "api_sig=" + sig;
 
     if (!hadAPIkey) delete params["api_key"];
@@ -32,7 +30,6 @@ RTM.prototype.formURL = function(serviceURL, params) {
 
 RTM.prototype.sign = function(payload) {
   var http = new XMLHttpRequest();
-  alert("http://home.segal.uvic.ca/~schadr/rtm-stats/sign.php?pay    load="+payload);
   http.open("GET", "http://home.segal.uvic.ca/~schadr/rtm-stats/sign.php?payload="+payload, true);
   http.send();
   return http.responseXML;
