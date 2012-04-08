@@ -1,6 +1,5 @@
 function RTM () {
-    //this.api_key = api_key;
-    //this.api_secret = api_secret;
+    this.api_key = "42af200895280c26d736e11b9a02b7da";
 }
 
 /**
@@ -8,22 +7,22 @@ function RTM () {
 */
 RTM.prototype.formURL = function(serviceURL, params) {
     hadAPIkey = true;
-    if ("api_key" in params) { 
+    if (!("api_key" in params)) { 
         params["api_key"] = this.api_key;
         hadAPIkey = false;
     }
     param_names = keys(params).sort();
-    
-    sig = "" + api_secret;
-    for (param_name in param_names) {
-        sig = sig + param_name + param_names[param_name];
+    sig = "";
+    for (i = 0; i < param_names.length; i = i + 1) {
+        sig = sig + param_names[i] + params[param_names[i]];
     }
-    sig = hex_md5(sig);
-
+    sig = this.sign(sig);
+    alert(sig);
     url = serviceURL;
-    for (param_name in param_names) {
-        url = url + param_name + "=" + params[param_name] + "&";
+    for (i = 0; i < param_names.length; i = i + 1) {
+        url = url + param_names[i] + "=" + params[param_names[i]] + "&";
     }
+    alert(url);
     url = url + "api_sig=" + sig;
 
     if (!hadAPIkey) delete params["api_key"];
@@ -31,6 +30,16 @@ RTM.prototype.formURL = function(serviceURL, params) {
     return url;
 }
 
+RTM.prototype.sign = function(payload) {
+  var http = new XMLHttpRequest();
+  alert("http://home.segal.uvic.ca/~schadr/rtm-stats/sign.php?pay    load="+payload);
+  http.open("GET", "http://home.segal.uvic.ca/~schadr/rtm-stats/sign.php?payload="+payload, true);
+  http.send();
+  return http.responseXML;
+}
+
 RTM.prototype.getAuthenticationURL = function() {
-  return "http://www.google.com";
+  var base_url = "http://www.rememberthemilk.com/services/auth/";
+  var params = {};
+  return this.formURL(base_url, params);
 }
