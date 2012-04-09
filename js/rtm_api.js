@@ -17,7 +17,7 @@ RTM.prototype.formURL = function(serviceURL, params) {
         sig = sig + param_names[i] + params[param_names[i]];
     }
     sig = this.sign(sig);
-    url = serviceURL;
+    url = serviceURL + "?";
     for (i = 0; i < param_names.length; i = i + 1) {
         url = url + param_names[i] + "=" + params[param_names[i]] + "&";
     }
@@ -30,13 +30,13 @@ RTM.prototype.formURL = function(serviceURL, params) {
 
 RTM.prototype.sign = function(payload) {
   var http = new XMLHttpRequest();
-  http.open("GET", "http://home.segal.uvic.ca/~schadr/rtm-stats/sign.php?payload="+payload, true);
+  http.open("GET", "php/sign.php?payload="+payload, false);
   http.send();
-  return http.responseXML;
+  return trim(http.responseText);
 }
 
 RTM.prototype.getAuthenticationURL = function() {
   var base_url = "http://www.rememberthemilk.com/services/auth/";
-  var params = {};
+  var params = {"perms":"delete"};
   return this.formURL(base_url, params);
 }
