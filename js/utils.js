@@ -6,17 +6,17 @@ keys = function(dict) {
   return keys;
 }
 
-/**
-* from http://papermashup.com/read-url-get-variables-withjavascript/
-*/
-getUrlVars = function() {
-  var vars = {};
-  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-    vars[key] = value;
-  });
-  return vars;
-}
-
 function trim(str) {
   return str.replace(/^\s*/, '').replace(/\s*$/, '');
+}
+
+function makeStruct(names) {
+  var names = names.split(' ');
+  var count = names.length;
+  function constructor() {
+    for (var i = 0; i < count; i++) {
+      this[names[i]] = arguments[i];
+    }
+  }
+  return constructor;
 }
