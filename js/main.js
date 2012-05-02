@@ -1,15 +1,19 @@
 load = function() {
-  // check for cookies
-  // TODO for later
-  // check for callback
-  if ("frob" in getUrlVars()) {
-    var frob = getUrlVars()["frob"];
-    // TODO grab the actual data
+  var rtm = new RTM();
+  rtm.loginUsingCooky();
+  if (!rtm.isLoggedIn()) {
+    rtm.login();
   }
-  // leave default page
+  if (!rtm.isAuthenticated()) {
+    rtm.authenticate();
+  }
+  var frob = rtm.getFrob();
 }
 
 auth = function() {
   rtm = new RTM();
-  window.location = rtm.getAuthenticationURL();
+  var url = rtm.getAuthenticationURL();
+  xmlhttp = new XMLHttpRequest();
+
+//  window.location = rtm.getAuthenticationURL();
 }

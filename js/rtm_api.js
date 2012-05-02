@@ -40,3 +40,24 @@ RTM.prototype.getAuthenticationURL = function() {
   var params = {"perms":"delete"};
   return this.formURL(base_url, params);
 }
+
+RTM.prototype.loginUsingCooky = function() {
+}
+
+RTM.prototype.isLoggedIn = function() {
+  return false;
+}
+
+RTM.prototype.login = function() {
+}
+
+RTM.prototype.isAuthenticated = function() {
+  return false;
+}
+
+RTM.prototype.authenticate = function() {
+}
+
+RTM.prototype.getFrob = function() {
+  return "";
+}
