@@ -15,7 +15,7 @@ GET = function(url, params, async) {
   xmlhttp.send();
 
   response = makeStruct("status xml");
-  return new response(xmlhttp.status, xmlhttp.responseXML);
+  return new response(xmlhttp.status, xmlhttp.response);
 }
 
 POST = function(url, params, content, async) {
@@ -38,7 +38,7 @@ POST = function(url, params, content, async) {
   xmlhttp.send();
 
   response = makeStruct("status xml");
-  return new response(xmlhttp.status, xmlhttp.responseXML);
+  return new response(xmlhttp.status, xmlhttp.response);
 }
 
 combineUrlVars = function(url, params) {
