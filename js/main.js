@@ -1,19 +1,12 @@
 load = function() {
+  // using the desktop api authentication
   var rtm = new RTM();
-  rtm.loginUsingCooky();
-  if (!rtm.isLoggedIn()) {
-    rtm.login();
-  }
-  if (!rtm.isAuthenticated()) {
-    rtm.authenticate();
-  }
   var frob = rtm.getFrob();
+  rtm.authenticate(frob, afterAuthentication);
 }
 
-auth = function() {
-  rtm = new RTM();
-  var url = rtm.getAuthenticationURL();
-  xmlhttp = new XMLHttpRequest();
-
-//  window.location = rtm.getAuthenticationURL();
+afterAuthentication = function(frob) {
+  var rtm = new RTM();
+  var frob = rtm.getFrob();
+  window.document.write("success\n");
 }

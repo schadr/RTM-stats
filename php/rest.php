@@ -42,7 +42,9 @@ function rest_helper($url, $params = null, $verb = 'GET')
 //
 //
 $params = array();
-$url = $_GET["url"];
+//print_r($_GET);
+$url = urldecode($_GET["url"]);
+//echo urldecode($url);
 $verb = $_GET["verb"];
 
 foreach ($_GET as $key => $value) {

@@ -1,4 +1,4 @@
-function RTM () {
+function RTM() {
     this.api_key = "42af200895280c26d736e11b9a02b7da";
 }
 
@@ -35,29 +35,26 @@ RTM.prototype.sign = function(payload) {
   return trim(http.responseText);
 }
 
-RTM.prototype.getAuthenticationURL = function() {
+RTM.prototype.getAuthenticationURL = function(frob) {
   var base_url = "http://www.rememberthemilk.com/services/auth/";
-  var params = {"perms":"delete"};
+  var params = {"perms":"delete","frob":frob};
   return this.formURL(base_url, params);
 }
 
-RTM.prototype.loginUsingCooky = function() {
-}
-
-RTM.prototype.isLoggedIn = function() {
-  return false;
-}
-
-RTM.prototype.login = function() {
-}
-
-RTM.prototype.isAuthenticated = function() {
-  return false;
-}
-
-RTM.prototype.authenticate = function() {
+RTM.prototype.authenticate = function(frob, callback) {
+  var auth_url = this.getAuthenticationURL(frob);
+  var auth_window = window.open("php/authwindow.php?url=" + auth_url);
+  auth_window.addEventListener('unload', callback, true);
 }
 
 RTM.prototype.getFrob = function() {
-  return "";
+  var service_url = "http://api.rememberthemilk.com/services/rest/";
+  var params = new Array();
+  params["method"] = "rtm.auth.getFrob";
+  var url = this.formURL(service_url, params);
+  var result = GET(url, null, false);
+  var parser = new DOMParser();
+  var xmlDoc = parser.parseFromString(result.xml,"text/xml");
+
+  return xmlDoc.getElementsByTagName("frob").item(0).nodeValue;
 }
