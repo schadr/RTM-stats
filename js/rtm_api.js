@@ -43,7 +43,7 @@ RTM.prototype.getAuthenticationURL = function(frob) {
 
 RTM.prototype.authenticate = function(frob, callback) {
   var auth_url = this.getAuthenticationURL(frob);
-  var auth_window = window.open("php/authwindow.php?url=" + auth_url);
+  var auth_window = window.open("php/authwindow.php?url=" + encodeURIComponent(auth_url));
   auth_window.addEventListener('unload', callback, true);
 }
 
@@ -56,5 +56,5 @@ RTM.prototype.getFrob = function() {
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(result.xml,"text/xml");
 
-  return xmlDoc.getElementsByTagName("frob").item(0).nodeValue;
+  return xmlDoc.getElementsByTagName("frob").item(0).firstChild.nodeValue;
 }
