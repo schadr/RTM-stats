@@ -48,13 +48,20 @@ RTM.prototype.authenticate = function(frob, callback) {
 }
 
 RTM.prototype.getFrob = function() {
-  var service_url = "http://api.rememberthemilk.com/services/rest/";
-  var params = new Array();
-  params["method"] = "rtm.auth.getFrob";
-  var url = this.formURL(service_url, params);
-  var result = GET(url, null, false);
-  var parser = new DOMParser();
-  var xmlDoc = parser.parseFromString(result.xml,"text/xml");
+  var frob = "";
+  if (hasCookie("frob")) {
+    frob = getCookieValue("frob");
+  } else {
+    var service_url = "http://api.rememberthemilk.com/services/rest/";
+    var params = new Array();
+    params["method"] = "rtm.auth.getFrob";
+    var url = this.formURL(service_url, params);
+    var result = GET(url, null, false);
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(result.xml,"text/xml");
 
-  return xmlDoc.getElementsByTagName("frob").item(0).firstChild.nodeValue;
+    frob = xmlDoc.getElementsByTagName("frob").item(0).firstChild.nodeValue;
+    setCookie("frob",frob,1);
+  }
+  return frob;
 }
