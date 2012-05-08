@@ -65,3 +65,39 @@ RTM.prototype.getFrob = function() {
   }
   return frob;
 }
+
+RTM.prototype.isCookieAuthTokenValid = function() {
+  if (!hasCookie("auth_token")) return false;
+  var service_url = "http://api.rememberthemilk.com/services/rest/";
+  var auth_token = getCookieValue("auth_token");
+  var params = new Array();
+  params["method"] = "rtm.auth.checkToken";
+  params["auth_token"] = auth_token;
+  var url = this.formURL(service_url, params);
+  var result = GET(url, null, false);
+  var parser = new DOMParser();
+  var xmlDoc = parser.parserFromString(result.xml,"text/xml");
+
+  var err_tags = xmlDoc.getElementsByTagName("err");
+
+  return err_tags.length != 0;
+}
+
+RTM.prototype.getAuthToken = function(frob) {
+  if (frob == null || frob == undefined) throw "ERROR: RTM.getToken(frob) - no frob given";
+  if (this.isCookieAuthTokenValid()) return getCokkieValue("auth_token");
+
+  var service_url = "http://api.rememberthemilk.com/services/rest/";
+  var params = new Array();
+  params["method"] = "rtm.auth.getToken";
+  params["frob"] = frob;
+  var url = this.formURL(service_url, params);
+  var result = GET(url, null, false);
+  console.log(result.xml);
+  var parser = new DOMParser();
+  var xmlDoc = parser.parseFromString(result.xml,"text/xml");
+  
+  var token = xmlDoc.getElementsByTagName("auth_token").item(0).firstChild.nodeValue;
+  setCookie("auth_token",token,1);
+  return token;
+}
