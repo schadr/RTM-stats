@@ -1,4 +1,5 @@
 getCookieValue = function(c_name) {
+  if ( !(c_name in getCookies()) ) throw "ERROR: Value not found";
   return getCookies()[c_name];
 }
 

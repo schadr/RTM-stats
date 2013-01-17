@@ -53,8 +53,7 @@ RTM.prototype.getFrob = function() {
     frob = getCookieValue("frob");
   } else {
     var service_url = "http://api.rememberthemilk.com/services/rest/";
-    var params = new Array();
-    params["method"] = "rtm.auth.getFrob";
+    var params = {"method": "rtm.auth.getFrob"};
     var url = this.formURL(service_url, params);
     var result = GET(url, null, false);
     var parser = new DOMParser();
@@ -69,14 +68,11 @@ RTM.prototype.getFrob = function() {
 RTM.prototype.isCookieAuthTokenValid = function() {
   if (!hasCookie("auth_token")) return false;
   var service_url = "http://api.rememberthemilk.com/services/rest/";
-  var auth_token = getCookieValue("auth_token");
-  var params = new Array();
-  params["method"] = "rtm.auth.checkToken";
-  params["auth_token"] = auth_token;
+  var params = {"method":"rtm.auth.checkToken","auth_token":getCookieValue("auth_token")};
   var url = this.formURL(service_url, params);
   var result = GET(url, null, false);
   var parser = new DOMParser();
-  var xmlDoc = parser.parserFromString(result.xml,"text/xml");
+  var xmlDoc = parser.parseFromString(result.xml,"text/xml");
 
   var err_tags = xmlDoc.getElementsByTagName("err");
 
@@ -85,19 +81,17 @@ RTM.prototype.isCookieAuthTokenValid = function() {
 
 RTM.prototype.getAuthToken = function(frob) {
   if (frob == null || frob == undefined) throw "ERROR: RTM.getToken(frob) - no frob given";
-  if (this.isCookieAuthTokenValid()) return getCokkieValue("auth_token");
+  if (this.isCookieAuthTokenValid()) return getCookieValue("auth_token");
 
   var service_url = "http://api.rememberthemilk.com/services/rest/";
-  var params = new Array();
-  params["method"] = "rtm.auth.getToken";
-  params["frob"] = frob;
+  var params = {"method":"rtm.auth.getToken","frob":frob};
   var url = this.formURL(service_url, params);
   var result = GET(url, null, false);
   console.log(result.xml);
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(result.xml,"text/xml");
   
-  var token = xmlDoc.getElementsByTagName("auth_token").item(0).firstChild.nodeValue;
+  var token = xmlDoc.getElementsByTagName("token").item(0).firstChild.nodeValue;
   setCookie("auth_token",token,1);
   return token;
 }
